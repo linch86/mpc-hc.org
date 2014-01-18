@@ -1,14 +1,7 @@
 module.exports = function(grunt) {
     "use strict";
 
-    var crypto = require("crypto");
-    var currentDate = (new Date()).valueOf().toString();
-    var random = Math.random().toString();
-    var hash = crypto.createHash("sha1").update(currentDate + random).digest("hex");
-
-    // Project configuration.
     grunt.initConfig({
-        hash: hash,
         dirs: {
             dest: "_site",
             src: "source"
@@ -27,16 +20,15 @@ module.exports = function(grunt) {
             site: {}
         },
 
-        includereplace: {
-            dist: {
-                options: {
-                    globals: {
-                        HASH: hash
-                    }
-                },
-                files: [
-                    {src: "**/*.html", dest: "<%= dirs.dest %>/", expand: true, cwd: "<%= dirs.dest %>/"}
-                ]
+        rev: {
+            assets: {
+                files: {
+                    src: [
+                        "<%= dirs.dest %>/assets/css/**/{,*/}*.css",
+                        "<%= dirs.dest %>/assets/js/**/{,*/}*.js",
+                        //"<%= dirs.dest %>/assets/img/**/*.{jpg,jpeg,gif,png}"
+                    ]
+                }
             }
         },
 
@@ -56,6 +48,21 @@ module.exports = function(grunt) {
             }
         },
 
+        useminPrepare: {
+            html: "<%= dirs.dest %>/index.html",
+            options: {
+                dest: "<%= dirs.dest %>",
+                root: "<%= dirs.dest %>"
+            }
+        },
+
+        usemin: {
+            html: ["<%= dirs.dest %>/**/*.html"],
+            options: {
+                dirs: ["<%= dirs.dest %>/assets"]
+            }
+        },
+
         concat: {
             css: {
                 src: ["<%= dirs.src %>/assets/css/bootstrap.css",
@@ -63,7 +70,7 @@ module.exports = function(grunt) {
                       "<%= dirs.src %>/assets/css/jquery.fancybox.css",
                       "<%= dirs.src %>/assets/css/jquery.fancybox-thumbs.css",
                       "<%= dirs.src %>/assets/css/style.css"],
-                dest: "<%= dirs.dest %>/assets/css/pack-<%= hash %>.css"
+                dest: "<%= dirs.dest %>/assets/css/pack.css"
             },
             js: {
                 src: ["<%= dirs.src %>/assets/js/plugins.js",
@@ -71,7 +78,7 @@ module.exports = function(grunt) {
                       "<%= dirs.src %>/assets/js/jquery.mousewheel.js",
                       "<%= dirs.src %>/assets/js/jquery.fancybox.js",
                       "<%= dirs.src %>/assets/js/jquery.fancybox-thumbs.js"],
-                dest: "<%= dirs.dest %>/assets/js/pack-<%= hash %>.js"
+                dest: "<%= dirs.dest %>/assets/js/pack.js"
             },
             jsIE: {
                 src: ["<%= dirs.src %>/assets/js/html5shiv.js",
@@ -105,15 +112,10 @@ module.exports = function(grunt) {
         },
 
         cssmin: {
-            minify: {
-                options: {
-                    keepSpecialComments: 0,
-                    report: "min",
-                    selectorsMergeMode: "ie8"
-                },
-                files: {
-                    "<%= uncss.dist.dest %>": "<%= concat.css.dest %>"
-                }
+            options: {
+                keepSpecialComments: 0,
+                report: "min",
+                selectorsMergeMode: "ie8"
             }
         },
 
@@ -188,14 +190,17 @@ module.exports = function(grunt) {
     require("time-grunt")(grunt);
 
     grunt.registerTask("build", [
+        "clean",
         "jekyll",
+        "useminPrepare",
         "copy",
-        "includereplace",
-        "htmlmin",
         "concat",
-        "uncss",
+        //"uncss",
         "cssmin",
-        "uglify"
+        "uglify",
+        "rev",
+        "usemin",
+        "htmlmin"
     ]);
 
     grunt.registerTask("test", [
@@ -207,9 +212,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask("dev", [
         "jekyll",
+        "useminPrepare",
         "copy",
-        "includereplace",
-        "concat"
+        "concat",
+        "rev",
+        "usemin"
     ]);
 
     grunt.registerTask("default", [
