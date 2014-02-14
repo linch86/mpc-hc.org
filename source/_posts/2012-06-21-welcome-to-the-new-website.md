@@ -1,6 +1,7 @@
 ---
 author: vBm
 layout: news
+comments: true
 title: Welcome to the new website
 ---
 

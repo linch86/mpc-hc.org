@@ -1,6 +1,7 @@
 ---
 author: vBm
 layout: news
+comments: true
 title: Open call for contributors
 ---
 

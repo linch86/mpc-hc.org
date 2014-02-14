@@ -67,7 +67,8 @@ body > .container {
     margin-bottom: 10px;
 }
 
-.post-meta .date {
+.post-meta .date,
+.post-meta .user {
     margin-right: 6px;
 }
 

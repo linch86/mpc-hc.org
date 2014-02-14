@@ -12,6 +12,12 @@
         <span class="user">
             <i class="fa fa-user"></i> {{ page.author }}
         </span>
+        {% if page.comments %}
+        <span class="comments">
+            <i class="fa fa-comment"></i>
+            <a data-disqus-identifier="mpc-hc-{{ page.url }}" href="{{ page.url }}#disqus_thread">Comments</a>
+        </span>
+        {% endif %}
     </div>
 
 </div>

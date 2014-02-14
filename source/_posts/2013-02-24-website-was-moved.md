@@ -1,6 +1,7 @@
 ---
 author: XhmikosR
 layout: news
+comments: true
 title: Website was moved to our own server
 ---
 

@@ -1,6 +1,7 @@
 ---
 author: XhmikosR
 layout: news
+comments: true
 title: Website moved to Jekyll
 ---
 
