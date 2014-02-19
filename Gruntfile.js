@@ -18,7 +18,12 @@ module.exports = function(grunt) {
         copy: {
             dist: {
                 files: [
-                    {dest: "<%= dirs.dest %>/", src: "assets/js/jquery*.min.js", expand: true, cwd: "<%= dirs.src %>/"},
+                    {dest: "<%= dirs.dest %>/", src: ["assets/js/jquery*.min.js"], expand: true, cwd: "<%= dirs.src %>/"},
+                ]
+            },
+            dev: {
+                files: [
+                    {dest: "<%= dirs.dest %>/", src: ["assets/js/jquery*.min.js", "assets/js/defer.js"], expand: true, cwd: "<%= dirs.src %>/"},
                 ]
             }
         },
@@ -135,6 +140,11 @@ module.exports = function(grunt) {
                 files: {
                     "<%= concat.jsIE.dest %>": "<%= concat.jsIE.dest %>"
                 }
+            },
+            defer: {
+                files: {
+                    "<%= dirs.dest %>/assets/js/defer-<%= hash %>.js": "<%= dirs.src %>/assets/js/defer.js"
+                }
             }
         },
 
@@ -191,7 +201,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask("build", [
         "jekyll",
-        "copy",
+        "copy:dist",
         "includereplace",
         "htmlmin",
         "concat",

@@ -37,20 +37,22 @@
                 Some features, like the navigation button, won't be available.</p>
             </div>
         </noscript>
+        <script>
+            function downloadJSAtOnload() {
+                var element = document.createElement("script");
+                element.src = "/assets/js/defer-@@HASH.js";
+                document.body.appendChild(element);
+            }
+            if (window.addEventListener)
+                window.addEventListener("load", downloadJSAtOnload, false);
+            else if (window.attachEvent)
+                window.attachEvent("onload", downloadJSAtOnload);
+            else
+                window.onload = downloadJSAtOnload;
+        </script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="/assets/js/jquery-1.11.0.min.js"><\/script>')</script>
         <script src="/assets/js/pack-@@HASH.js"></script>
-        {% if page.name == "downloads" or page.name == "home" %}
-        <script>
-            (function() {
-                var el = document.createElement('script');
-                el.src = '//sourceforge.net/accelerator/js?partner_id=72';
-                el.defer = true;
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(el, s);
-            })();
-        </script>
-        {% endif %}
         {% if page.name == "home" or page.name == "binaries-are-signed" %}
         <script>
             $(document).ready(function() {
