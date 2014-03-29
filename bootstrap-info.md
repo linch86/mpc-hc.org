@@ -1,6 +1,6 @@
 http://getbootstrap.com/customize/
 
-Enabled components in v3.1.0:
+Enabled components in v3.2.0:
 
 
 Common CSS (all)
